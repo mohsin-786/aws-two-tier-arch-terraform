@@ -1,0 +1,21 @@
+*{
+	padding:0;
+	margin:0;
+}
+
+table{
+	table-layout:fixed;
+	width:100%;
+	border-collapse:collapse;
+	
+}
+table, th,td{
+	border: 1px solid rgb(220,220,220);
+}
+
+table th{
+	background-color: rgb(104, 208, 109);
+}
+table td{
+	text-align:center;
+}
