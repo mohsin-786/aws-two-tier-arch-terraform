@@ -43,6 +43,20 @@ resource "aws_subnet" "privnet-2" {
   availability_zone       = var.az[1]
   map_public_ip_on_launch = false
 }
+#PRIVATE SUBNET 3
+resource "aws_subnet" "privnet-3" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.priv-subnet[2]
+  availability_zone       = var.az[0]
+  map_public_ip_on_launch = false
+}
+#PRIVATE SUBNET 4
+resource "aws_subnet" "privnet-4" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.priv-subnet[3]
+  availability_zone       = var.az[1]
+  map_public_ip_on_launch = false
+}
 ###################################
 #ROUTE TABLE FOR PUBLIC ASSOCIATION
 resource "aws_route_table" "rt-pub" {
@@ -104,25 +118,33 @@ resource "aws_route_table_association" "d" {
   route_table_id = aws_route_table.rt-priv-2.id
 
 }
+#ROUTE TABLE ASSOCIATION FOR PRIVATE SUBNET 3
+resource "aws_route_table_association" "e" {
+  subnet_id      = aws_subnet.privnet-3.id
+  route_table_id = aws_route_table.rt-priv-1.id
+
+}
+#ROUTE TABLE ASSOCIATION FOR PRIVATE SUBNET 4
+resource "aws_route_table_association" "f" {
+  subnet_id      = aws_subnet.privnet-4.id
+  route_table_id = aws_route_table.rt-priv-2.id
+
+}
 ###################################
-#EIP 1 
-resource "aws_eip" "eip-1" {
-  domain = "vpc"
-}
-#EIP 2
-resource "aws_eip" "eip-2" {
-  domain = "vpc"
-}
+
 ###################################
 #NAT GATEWAY 1
 resource "aws_nat_gateway" "nat-1" {
   subnet_id     = aws_subnet.pubnet-1.id
   allocation_id = aws_eip.eip-1.id
+  depends_on = [aws_internet_gateway.igw]
+
 }
 #NAT GATEWAY 2
 resource "aws_nat_gateway" "nat-2" {
   subnet_id     = aws_subnet.pubnet-2.id
   allocation_id = aws_eip.eip-2.id
+  depends_on = [aws_internet_gateway.igw]
 }
 ###################################
 

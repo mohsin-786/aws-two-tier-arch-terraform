@@ -14,8 +14,7 @@ resource "aws_security_group" "lb-sg" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks = [ "0.0.0.0/0" ]
   }
 
   tags = {
@@ -23,7 +22,7 @@ resource "aws_security_group" "lb-sg" {
   }
 }
 
-#SECURITY GROUP FOR EC2
+#SECURITY GROUP FOR WEBSERVER
 resource "aws_security_group" "webserver-sg" {
   name        = "webserver-sg"
   description = "Security group for webserver"
@@ -33,14 +32,14 @@ resource "aws_security_group" "webserver-sg" {
     to_port     = 80
     protocol    = "tcp"
     description = "HTTP"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [ aws_security_group.lb-sg.id ]
   }
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    description = "HTTP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    description     = "SSH"
+    security_groups = [aws_security_group.bastion-sg.id]
   }
   egress {
     from_port        = 0
@@ -48,6 +47,7 @@ resource "aws_security_group" "webserver-sg" {
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
+    
   }
   tags = {
     Name = "web-secgrp"
@@ -71,7 +71,7 @@ resource "aws_security_group" "db-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    description = "HTTP"
+    description = "SSH"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
@@ -83,5 +83,30 @@ resource "aws_security_group" "db-sg" {
   }
   tags = {
     Name = "db-secgrp"
+  }
+}
+
+#BASTION HOST SECURITY GROUP
+resource "aws_security_group" "bastion-sg" {
+  name        = "bastion-sg"
+  description = "Security group for lb"
+  vpc_id      = aws_vpc.vpc.id
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    description = "SSH"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "bastion-secgrp"
   }
 }
