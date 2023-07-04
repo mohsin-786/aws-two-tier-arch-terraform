@@ -128,8 +128,8 @@ resource "aws_route_table_association" "e" {
 resource "aws_route_table_association" "f" {
   subnet_id      = aws_subnet.privnet-4.id
   route_table_id = aws_route_table.rt-priv-2.id
-
-}
+ 
+} 
 ###################################
 
 ###################################
@@ -137,14 +137,14 @@ resource "aws_route_table_association" "f" {
 resource "aws_nat_gateway" "nat-1" {
   subnet_id     = aws_subnet.pubnet-1.id
   allocation_id = aws_eip.eip-1.id
-  depends_on = [aws_internet_gateway.igw]
+  depends_on    = [aws_internet_gateway.igw]
 
 }
 #NAT GATEWAY 2
 resource "aws_nat_gateway" "nat-2" {
   subnet_id     = aws_subnet.pubnet-2.id
   allocation_id = aws_eip.eip-2.id
-  depends_on = [aws_internet_gateway.igw]
+  depends_on    = [aws_internet_gateway.igw]
 }
 ###################################
 

@@ -13,6 +13,7 @@ resource "aws_db_instance" "db-mine" {
   engine                 = "mysql"
   engine_version         = "5.7"
   identifier             = "db-instanced"
+  multi_az               = true
   instance_class         = "db.t2.micro"
   username               = "password"
   password               = "password"

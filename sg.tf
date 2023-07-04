@@ -11,10 +11,10 @@ resource "aws_security_group" "lb-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks = [ "0.0.0.0/0" ]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -28,11 +28,11 @@ resource "aws_security_group" "webserver-sg" {
   description = "Security group for webserver"
   vpc_id      = aws_vpc.vpc.id
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    description = "HTTP"
-    security_groups = [ aws_security_group.lb-sg.id ]
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    description     = "HTTP"
+    security_groups = [aws_security_group.lb-sg.id]
   }
   ingress {
     from_port       = 22
@@ -47,7 +47,7 @@ resource "aws_security_group" "webserver-sg" {
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    
+
   }
   tags = {
     Name = "web-secgrp"
