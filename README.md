@@ -1,6 +1,6 @@
 
 # :classical_building: Architecture
-![](https://github.com/mohsin-786/aws-two-tier-arch-terraform/blob/main/aws.gif)
+![](https://github.com/mohsin-786/aws-two-tier-arch-terraform/blob/main/aws2.gif)
 
 
 
