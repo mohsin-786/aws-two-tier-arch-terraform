@@ -20,14 +20,5 @@ resource "aws_autoscaling_group" "asg" {
   }
 }
 
-resource "aws_instance" "bastion" {
-  ami                    = var.ami
-  instance_type          = var.type
-  key_name               = "sin"
-  vpc_security_group_ids = [aws_security_group.bastion-sg.id]
-  subnet_id              = aws_subnet.pubnet-1.id
-  tags = {
-    Name = "Bastion"
-  }
-}
+
 
